@@ -1,0 +1,172 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  color: #fff;
+}
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+#root {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.notes {
+  display: flex;
+  flex-wrap: wrap;
+  height: fit-content;
+  width: 100%;
+
+  gap: 1rem;
+}
+.note {
+  background-color: #000;
+  border-radius: 0.5rem;
+  width: fit-content;
+  display: flex;
+  padding: 1rem;
+  gap: 0.5rem;
+  background-color: #562F00 ;
+
+  flex-direction: column;
+}
+
+.tittle {
+  color: #FFCE99;
+  font-size: 2rem;
+  text-transform: capitalize;
+  line-height: 2rem;
+}
+
+.description {
+  color: #FFFDF1;
+  font-size: 1.5rem;
+}
+
+.feacture {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.edit,
+.delete {
+  padding: 0.2rem 0.4rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: 1px solid #FFFDF1;
+  background-color: transparent;
+}
+.edit:active,
+.delete:active {
+  scale: 0.95;
+}
+.edit i,
+.delete i {
+  color: #FF9644;
+  
+}
+
+.noteForm {
+  display: flex;
+  gap: 1rem;
+}
+
+.tittleInput,
+.descriptionInput {
+  padding: 0.5rem 1rem;
+  color: #000;
+  outline: none;
+  background-color: transparent;
+  border: 2px solid #562F00;
+  border-radius: 0.5rem;
+  width: 18rem;
+  font-size: 1.1rem;
+}
+.createBtn {
+  padding: 0.5rem 1rem;
+  background-color: #FF9644;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #562F00;
+  font-weight: 600;
+}
+
+.updateForm {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fffdf1a1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: .7rem;
+  padding: 2rem;
+
+}
+
+.updateInput{
+    padding: 0.5rem 1rem;
+  color: #000;
+  outline: none;
+  background-color: transparent;
+  border: 2px solid #562F00;
+  border-radius: 0.5rem;
+  width: 18rem;
+  font-size: 1.1rem;
+  background-color: #FFCE99;
+}
+
+.updateBtn{
+  width: 18rem;
+    padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+background-color: #FF9644;
+border: none;
+color: #562F00;
+cursor: pointer;
+  border-radius: 0.5rem;
+  font-weight: 600;
+
+}
+
+
+@media (max-width:650px) {
+  .noteForm{
+    flex-direction: column;
+
+  }
+  .tittleInput,
+.descriptionInput , .updateInput{
+  width: 100%;
+}
+  .createBtn , .updateBtn {
+    width:100%;
+  }
+}
