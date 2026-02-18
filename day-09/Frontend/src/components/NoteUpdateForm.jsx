@@ -7,7 +7,7 @@ const noteUpdateForm = ({ note, handleShow, fetchNotes }) => {
     const tittle = e.target.updateTittle.value;
     const description = e.target.updateDescription.value;
     axios
-      .patch("http://localhost:3000/api/note/" + note._id, {
+      .patch("https://day-09.up.railway.app/api/note/" + note._id, {
         tittle: tittle,
         description: description,
       })

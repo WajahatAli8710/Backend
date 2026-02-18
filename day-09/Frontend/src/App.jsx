@@ -10,14 +10,14 @@ const App = () => {
   const [selectedNote, setSelectedNote] = useState("");
 
   function fetchNotes() {
-    axios.get("http://localhost:3000/api/notes").then((res) => {
+    axios.get("https://day-09.up.railway.app/api/notes").then((res) => {
       setData(res.data.notes);
     });
   }
 
   function createNote(tittle, description) {
     axios
-      .post("http://localhost:3000/api/notes", {
+      .post("https://day-09.up.railway.app/api/notes", {
         tittle,
         description,
       })
@@ -38,7 +38,7 @@ const App = () => {
   }
 
   function handleDelete(id) {
-    axios.delete("http://localhost:3000/api/note/" + id).then(() => {
+    axios.delete("https://day-09.up.railway.app/api/note/" + id).then(() => {
       fetchNotes();
     });
   }
