@@ -6,19 +6,13 @@ const postSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-      mediaUrl: {
-        type: [String],
-        required: [true, "media url is required for creating an post"],
-      },
-    mediaType: {
-      type: String,
-      enum: ["image", "video"],
-      required: true,
+    imageUrl: {
+      type: [String],
+      required: [true, "image url is required for creating an post"],
     },
     type: {
       type: String,
-      enum: ["post", "reel"],
-      required: true,
+      default: "post",
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

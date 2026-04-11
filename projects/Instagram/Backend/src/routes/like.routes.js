@@ -4,6 +4,6 @@ const identifyUser = require("../middlewares/auth.middleware")
 const likeRouter = express.Router();
 
 
-likeRouter.post("/:postId" , identifyUser ,likePostController)
+likeRouter.post("/:entityId" , identifyUser ,likePostController)
 
 module.exports = likeRouter;

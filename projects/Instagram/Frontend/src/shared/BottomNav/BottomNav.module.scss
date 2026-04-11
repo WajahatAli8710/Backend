@@ -1,0 +1,37 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $bottom-nav-height;
+  background: $bg-primary;
+  border-top: 1px solid $border-color;
+  @include flex-between;
+  padding: 0 $spacing-lg;
+  z-index: $z-sticky;
+
+  @include tablet-up {
+    display: none;
+  }
+}
+
+.navItem {
+  @include flex-center;
+  padding: $spacing-sm $spacing-md;
+  color: $text-primary;
+  flex: 1;
+  height: 100%;
+}
+
+.active {
+  color: $text-primary;
+}
+
+.icon {
+  @include flex-center;
+  width: 24px;
+  height: 24px;
+}

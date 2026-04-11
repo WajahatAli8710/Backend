@@ -13,11 +13,12 @@ export const login = async (email, password) => {
   return responces;
 };
 
-export const register = async (username, email, password) => {
+export const register = async (username, email, password , name) => {
   const responces = await api.post("/register", {
     username,
     email,
     password,
+    name
   });
 
   return responces;

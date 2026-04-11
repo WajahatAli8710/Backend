@@ -2,10 +2,15 @@ const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema(
   {
-    post: {
+    entityId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "post",
       required: true,
+    },
+
+    entityType: {
+      type: String,
+      required: true,
+      enum: ["post", "reel"],
     },
 
     user: {
@@ -27,4 +32,4 @@ const commentSchema = new mongoose.Schema(
 
 const commentModel = mongoose.model("comment", commentSchema);
 
-module.exports = commentModel
+module.exports = commentModel;

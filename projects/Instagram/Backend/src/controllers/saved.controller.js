@@ -1,22 +1,36 @@
 const postModel = require("../models/post.model");
-const savedPostModel = require("../models/savedPost.model");
+const reelModel = require("../models/reel.model");
+const savedModel = require("../models/saved.model");
 
-async function savedPostController(req, res) {
+async function savedController(req, res) {
   const user = req.user.id;
-  const post = req.params.postId;
+  const entityId = req.params.entityId;
   let isSaved;
 
-  const isPostExists = await postModel.findOne({ _id: post });
+  let isEntityExists;
 
-  if (!isPostExists) {
-    return res.status(404).json({
-      message: "post not found",
+  if (!entityId) {
+    return res.status(400).json({
+      message: "id is required in params.",
     });
   }
 
-  const isAlreadySaved = await savedPostModel.findOne({
+  isEntityExists = await postModel.findOne({ _id: entityId });
+
+  if (!isEntityExists) {
+    isEntityExists = await reelModel.findOne({ _id: entityId });
+  }
+
+  if (!isEntityExists) {
+    return res.status(404).json({
+      message: "not found",
+    });
+  }
+
+  const isAlreadySaved = await savedModel.findOne({
     user,
-    post,
+    entityId: isEntityExists._id,
+    entityType: isEntityExists.type,
   });
 
   if (isAlreadySaved) {
@@ -27,25 +41,34 @@ async function savedPostController(req, res) {
       isAlreadySaved.type = true;
       await isAlreadySaved.save();
     }
+
     return res.status(200).json({
       message:
         isAlreadySaved.type === true
-          ? "post saved successfully"
-          : "post not saved",
+          ? isAlreadySaved.entityType === "post"
+            ? "post saved successfully"
+            : "reel saved successfully"
+          : isAlreadySaved.entityType === "post"
+            ? "post not saved"
+            : "reel not saved",
       data: isAlreadySaved,
     });
   } else {
-    isSaved = await savedPostModel.create({
+    isSaved = await savedModel.create({
       user,
-      post,
+      entityId: isEntityExists._id,
+      entityType: isEntityExists.type,
       type: true,
     });
   }
 
   return res.status(201).json({
-    message: "post saved successfully",
+    message:
+      isSaved.entityType === "post"
+        ? "post saved successfully"
+        : "reel saved successfully ",
     data: isSaved,
   });
 }
 
-module.exports = savedPostController;
+module.exports = savedController;

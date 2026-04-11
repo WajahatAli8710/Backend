@@ -1,9 +1,10 @@
 const commentModel = require("../models/comment.model");
 const postModel = require("../models/post.model");
+const reelModel = require("../models/reel.model")
 
-async function createCommentController(req, res) {
+async function createPostCommentController(req, res) {
   const { text } = req.body;
-  const postId = req.params.postId;
+  const postId = req.params.id;
 
   const isPostExist = await postModel.findOne({
     _id: postId,
@@ -20,13 +21,44 @@ async function createCommentController(req, res) {
   }
 
   const data = await commentModel.create({
-    post: postId,
+    entityId: postId,
+    entityType: "post",
     user: req.user.id,
-    text,
+    text: text,
   });
 
   return res.status(201).json({
-    message: "add comment successfully.",
+    message: "add post comment successfully.",
+    data,
+  });
+}
+
+async function createReelCommentController(req, res) {
+  const { text } = req.body;
+  const reelId = req.params.id;
+  const isReelExist = await reelModel.findOne({
+    _id: reelId,
+  });
+
+  if (!isReelExist) {
+    return res.status(404).json({
+      message: "reel not found.",
+    });
+  }
+
+  if (!text) {
+    return res.status(400).json({ message: "comment text required" });
+  }
+
+  const data = await commentModel.create({
+    entityId: reelId,
+    entityType: "reel",
+    user: req.user.id,
+    text: text,
+  });
+
+  return res.status(201).json({
+    message: "add reel comment successfully.",
     data,
   });
 }
@@ -34,11 +66,26 @@ async function createCommentController(req, res) {
 async function getPostCommentController(req, res) {
   const { postId } = req.params;
 
-  const comments = await commentModel.find({ post: postId }).populate("user");
+  const postComments = await commentModel
+    .find({ entityId: postId, entityType: "post" })
+    .populate("user");
 
   return res.status(200).json({
-    message: "comments fetch successfully.",
-    data: comments,
+    message: "post comments fetch successfully.",
+    data: postComments,
+  });
+}
+
+async function getReelCommentController(req, res) {
+  const { reelId } = req.params;
+
+  const reelComments = await commentModel
+    .find({ entityId: reelId, entityType: "reel" })
+    .populate("user");
+
+  return res.status(200).json({
+    message: "reel comments fetch successfully.",
+    data: reelComments,
   });
 }
 
@@ -56,13 +103,15 @@ async function deleteCommentController(req, res) {
     return res.status(403).json({ message: "Unauthorized access." });
   }
 
-  await commentModel.findByIdAndDelete({_id:comment._id});
+  await commentModel.findByIdAndDelete({ _id: comment._id });
 
-  return res.status(204).end()
+  return res.status(204).end();
 }
 
 module.exports = {
-  createCommentController,
+  createPostCommentController,
+  createReelCommentController,
   getPostCommentController,
-  deleteCommentController
+  getReelCommentController,
+  deleteCommentController,
 };

@@ -7,10 +7,16 @@ const likeSchema = new mongoose.Schema(
       ref: "user",
       required: [true, "required for like post."],
     },
-    post: {
+
+    entityId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "post",
-      required: [true, "required for like post."],
+      required: true,
+    },
+
+    entityType: {
+      type: String,
+      required: true,
+      enum: ["post", "reel"],
     },
     type: {
       type: String,

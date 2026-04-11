@@ -1,22 +1,36 @@
-const likeModel = require("../models/like.model")
+const likeModel = require("../models/like.model");
 const postModel = require("../models/post.model");
+const reelModel = require("../models/reel.model");
 
 async function likePostController(req, res) {
   const user = req.user.id;
-  const post = req.params.postId;
+  const entityId = req.params.entityId;
+
   let isLike;
+  let isEntityExists;
 
-  const isPostExists = await postModel.findById(post);
+  if (!entityId) {
+    return res.status(400).json({
+      message: "id is required in params.",
+    });
+  }
 
-  if (!isPostExists) {
+  isEntityExists = await postModel.findById({ _id: entityId });
+
+  if (!isEntityExists) {
+    isEntityExists = await reelModel.findOne({ _id: entityId });
+  }
+
+  if (!isEntityExists) {
     return res.status(404).json({
-      message: "post not found.",
+      message: "not found",
     });
   }
 
   const isAlreadyLike = await likeModel.findOne({
     user,
-    post,
+    entityId: isEntityExists._id,
+    entityType: isEntityExists.type,
   });
 
   if (isAlreadyLike) {
@@ -29,22 +43,35 @@ async function likePostController(req, res) {
     }
     return res.status(200).json({
       message:
+        // isAlreadyLike.type === "like"
+        //   ? "post like successfully"
+        //   : "post dislike successfully",
+
         isAlreadyLike.type === "like"
-          ? "post like successfully"
-          : "post dislike successfully",
+          ? isAlreadyLike.entityType === "post"
+            ? "post like successfully"
+            : "reel like successfully"
+          : isAlreadyLike.entityType === "post"
+            ? "post  dislike successfully"
+            : "reel dislike successfully",
+
       data: isAlreadyLike,
     });
   } else {
     isLike = await likeModel.create({
       user,
-      post,
+      entityId: isEntityExists._id,
+      entityType: isEntityExists.type,
       type: "like",
     });
     return res.status(201).json({
-      message: "post like successfully",
+      message:
+        isLike.entityType === "post"
+          ? "post like successfully"
+          : "reel like successfully ",
       data: isLike,
     });
   }
 }
 
-module.exports = likePostController
+module.exports = likePostController;

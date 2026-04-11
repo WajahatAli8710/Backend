@@ -1,0 +1,199 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.feedPage {
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: $spacing-xl $spacing-lg;
+
+  @include mobile {
+    padding: 0;
+    gap: 0;
+  }
+}
+
+.feedMain {
+  width: 100%;
+  max-width: $max-feed-width;
+}
+
+.feedSidebar {
+  display: none;
+
+  @include wide {
+    display: block;
+    width: 320px;
+    flex-shrink: 0;
+    padding-top: $spacing-xxl;
+  }
+}
+
+// Stories Bar
+.storiesBar {
+  background: $bg-primary;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  overflow: hidden;
+
+  @include mobile {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    margin-bottom: $spacing-sm;
+  }
+}
+
+.storiesScroll {
+  display: flex;
+  gap: $spacing-lg;
+  overflow-x: auto;
+  @include hide-scrollbar;
+  padding: $spacing-xs;
+}
+
+.storyItem {
+  @include flex-column;
+  align-items: center;
+  gap: $spacing-xs;
+  flex-shrink: 0;
+  @include clickable;
+  width: 66px;
+}
+
+.storyAvatarWrapper {
+  position: relative;
+}
+
+.addStory {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  background: $accent-blue;
+  border: 2px solid $bg-primary;
+  border-radius: $radius-full;
+  @include flex-center;
+  font-size: 12px;
+  font-weight: $font-weight-bold;
+  color: $white;
+}
+
+.storyUsername {
+  font-size: $font-size-xs;
+  @include text-ellipsis;
+  max-width: 66px;
+  text-align: center;
+  color: $text-secondary;
+}
+
+// Posts List
+.postsList {
+  @include flex-column;
+}
+
+// Suggestions Sidebar
+.suggestions {
+  position: sticky;
+  top: $spacing-xl;
+}
+
+.suggestionsUser {
+  @include flex-between;
+  margin-bottom: $spacing-xl;
+}
+
+.sugUserInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.sugUsername {
+  display: block;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}
+
+.sugFullname {
+  display: block;
+  font-size: $font-size-md;
+  color: $text-secondary;
+}
+
+.switchBtn {
+  @include button-reset;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $accent-blue;
+}
+
+.suggestionsHeader {
+  @include flex-between;
+  margin-bottom: $spacing-lg;
+
+  span {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $text-secondary;
+  }
+}
+
+.seeAllBtn {
+  @include button-reset;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $text-primary;
+}
+
+.suggestedItem {
+  @include flex-between;
+  margin-bottom: $spacing-md;
+}
+
+.sugItemUsername {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}
+
+.sugItemMeta {
+  display: block;
+  font-size: $font-size-sm;
+  color: $text-tertiary;
+}
+
+.followBtn {
+  @include button-reset;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $accent-blue;
+
+  &:hover {
+    color: $white;
+  }
+}
+
+.footerLinks {
+  margin-top: $spacing-xxl;
+  
+  p {
+    font-size: $font-size-xs;
+    color: $text-tertiary;
+    line-height: 1.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &:first-child {
+      text-transform: none;
+      letter-spacing: normal;
+    }
+  }
+}

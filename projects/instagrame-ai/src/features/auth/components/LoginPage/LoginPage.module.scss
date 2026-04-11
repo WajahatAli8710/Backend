@@ -1,0 +1,178 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.loginPage {
+  min-height: 100vh;
+  @include flex-center;
+  background: $bg-primary;
+  padding: $spacing-lg;
+}
+
+.container {
+  @include flex-column;
+  align-items: center;
+  width: 100%;
+  max-width: 350px;
+}
+
+.formCard {
+  @include flex-column;
+  align-items: center;
+  width: 100%;
+  padding: $spacing-xxxl $spacing-xxl;
+  border: 1px solid $border-color;
+  border-radius: $radius-sm;
+  background: $bg-primary;
+}
+
+.logo {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 36px;
+  font-weight: 500;
+  margin-bottom: $spacing-xxl;
+  color: $text-primary;
+  letter-spacing: -1px;
+}
+
+.form {
+  @include flex-column;
+  width: 100%;
+  gap: $spacing-sm;
+}
+
+.inputGroup {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  background: $bg-primary;
+  border: 1px solid $border-color;
+  border-radius: $radius-sm;
+  color: $text-primary;
+  font-size: $font-size-sm;
+
+  &::placeholder {
+    color: $text-tertiary;
+  }
+
+  &:focus {
+    border-color: $border-color-light;
+  }
+}
+
+.showBtn {
+  @include button-reset;
+  position: absolute;
+  right: $spacing-sm;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $text-primary;
+}
+
+.loginBtn {
+  width: 100%;
+  padding: 8px;
+  background: $accent-blue;
+  color: $white;
+  border: none;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  margin-top: $spacing-sm;
+  transition: opacity $transition-fast;
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  &:not(:disabled):hover {
+    background: $accent-blue-hover;
+  }
+}
+
+.divider {
+  @include flex-center;
+  width: 100%;
+  gap: $spacing-lg;
+  margin: $spacing-xl 0;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: $border-color;
+}
+
+.orText {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $text-secondary;
+  text-transform: uppercase;
+}
+
+.fbLogin {
+  @include button-reset;
+  @include flex-center;
+  gap: $spacing-sm;
+  color: #385185;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  margin-bottom: $spacing-lg;
+
+  svg {
+    color: #385185;
+  }
+}
+
+.forgotLink {
+  font-size: $font-size-sm;
+  color: $text-link;
+}
+
+.signupCard {
+  width: 100%;
+  padding: $spacing-xl;
+  border: 1px solid $border-color;
+  border-radius: $radius-sm;
+  text-align: center;
+  margin-top: $spacing-md;
+  font-size: $font-size-md;
+  color: $text-secondary;
+}
+
+.signupLink {
+  color: $accent-blue;
+  font-weight: $font-weight-semibold;
+}
+
+.getApp {
+  @include flex-column;
+  align-items: center;
+  margin-top: $spacing-xl;
+  gap: $spacing-md;
+
+  p {
+    font-size: $font-size-md;
+    color: $text-secondary;
+  }
+}
+
+.appBadges {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.badge {
+  padding: 6px 12px;
+  background: $bg-elevated;
+  border-radius: $radius-sm;
+  font-size: $font-size-sm;
+  color: $text-secondary;
+}

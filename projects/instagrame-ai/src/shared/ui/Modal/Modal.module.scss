@@ -1,0 +1,64 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: $z-modal;
+  @include flex-center;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal {
+  background: $bg-secondary;
+  border-radius: $radius-lg;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideUp 0.2s ease;
+}
+
+.header {
+  @include flex-between;
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1px solid $border-color;
+}
+
+.spacer {
+  width: 30px;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  text-align: center;
+  flex: 1;
+}
+
+.closeBtn {
+  @include button-reset;
+  @include flex-center;
+  width: 30px;
+  height: 30px;
+}
+
+.content {
+  overflow-y: auto;
+  max-height: calc(90vh - 50px);
+  @include hide-scrollbar;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

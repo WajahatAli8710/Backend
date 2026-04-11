@@ -1,0 +1,24 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.reelFeed {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  @include hide-scrollbar;
+  background: $bg-primary;
+
+  @include mobile {
+    height: calc(100vh - $bottom-nav-height);
+  }
+}
+
+.reelSlide {
+  height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+
+  @include mobile {
+    height: calc(100vh - $bottom-nav-height);
+  }
+}

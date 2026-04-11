@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 async function reqisterController(req, res) {
-  const { username, email, password, bio, profilePic } = req.body;
+  const { name , username, email, password, bio, profilePic } = req.body;
 
   const isUserAlreadyExixts = await userModel.findOne({
     $or: [{ email }, { username }],
@@ -22,6 +22,7 @@ async function reqisterController(req, res) {
   const hashPassword = await bcrypt.hash(password, 10);
 
   const user = await userModel.create({
+    name,
     username,
     email,
     password: hashPassword,
@@ -42,6 +43,7 @@ async function reqisterController(req, res) {
   res.status(200).json({
     message: "user register successfully",
     user: {
+      name : user.name,
       username: user.username,
       email: user.email,
       bio: user.bio,

@@ -1,27 +1,48 @@
 const postModel = require("../models/post.model");
 const likeModel = require("../models/like.model");
 const followModel = require("../models/follow.model");
-const savedPostModel = require("../models/savedPost.model");
+const savedModel = require("../models/saved.model");
 const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
 const commentModel = require("../models/comment.model");
+const { fileTypeFromBuffer } = require("file-type");
 
 const client = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
 });
 
+const allowedMimeTypes = ["image/png", "image/jpeg", "image/webp"];
+
 async function createPostController(req, res) {
   const { caption } = req.body;
   const files = req.files;
+
+  let uploadedImages = [];
+  let type;
+  let actualImage = [];
+
   if (!files || files.length === 0) {
     return res.status(400).json({ message: "no files uploaded" });
   }
-  let uploadedImages = [];
 
   for (let file of files) {
+    type = await fileTypeFromBuffer(file.buffer);
+
+    if (!type) {
+      return res.status(400).json({ message: "invalid file" });
+    }
+
+    if (!allowedMimeTypes.includes(type.mime)) {
+      return res.status(400).json({ message: "only images are allowed" });
+    }
+
+    actualImage.push(file);
+  }
+
+  for (let image of actualImage) {
     const uploadedFile = await client.files.upload({
-      file: await toFile(Buffer.from(file.buffer), "file"),
-      fileName: "fileName",
+      file: await toFile(Buffer.from(image.buffer), "file"),
+      fileName: image.originalname,
       folder: "/instagram/posts",
     });
 
@@ -43,43 +64,91 @@ async function createPostController(req, res) {
 }
 
 async function getPostController(req, res) {
-  const posts = await postModel.find({
-    user: req.user.id,
-  });
+  const user = req.user.id;
+
+  const posts = await Promise.all(
+    (await reelModel.find({ user: user.id }).lean()).map(async (post) => {
+      const isLiked = await likeModel.findOne({
+        user: user.id,
+        entityId: post._id,
+        entityType: "post",
+      });
+
+      const commentsCount = await commentModel.aggregate([
+        { $match: { entityId: post._id, entityType: "post" } },
+        { $group: { _id: "$post", count: { $sum: 1 } } },
+      ]);
+
+      const likeCount = await likeModel.aggregate([
+        { $match: { entityId: post._id, entityType: "post" } },
+        { $group: { _id: "$post", count: { $sum: 1 } } },
+      ]);
+
+      post.isLiked = !!isLiked;
+      post.commentsCount = commentsCount;
+      post.likeCount = likeCount;
+
+      return post;
+    }),
+  );
 
   if (!posts) {
     return res.status(404).json({
-      message: "post not found.",
+      message: "posts not found.",
     });
   }
 
   res.status(200).json({
-    message: "post fetch successfully",
+    message: "posts fetch successfully",
     data: posts,
   });
 }
 
 async function getPostDetailController(req, res) {
   const postId = req.params;
+  const user = req.user.id;
 
-  let post;
-  try {
-    post = await postModel.findOne({
+  const post = await postModel
+    .findOne({
       _id: postId.id,
-    });
-  } catch (err) {
-    return res.status(404).json({
+    })
+    .populate("user")
+    .lean();
+
+  if (!post) {
+    res.status(404).json({
       message: "post not found.",
     });
   }
 
-  const isValidUser = post.user.toString() === req.user.id;
+  const isValidUser = post.user.toString() === user.id;
 
   if (!isValidUser) {
     return res.status(403).json({
       message: "not permission, Forbidden access.",
     });
   }
+
+  const isLiked = await likeModel.findOne({
+    user: user.id,
+    entityId: post._id,
+    entityType: "post",
+  });
+
+  const isSaved = await savedModel.findOne({
+    user: user.id,
+    entityId: post._id,
+    entityType: "post",
+  });
+
+  const likeCount = await likeModel.aggregate([
+    { $match: { entityId: post._id, entityType: "post" } },
+    { $group: { _id: "$post", count: { $sum: 1 } } },
+  ]);
+
+  post.isLiked = !!isLiked;
+  post.isSaved = !!isSaved;
+  post.likeCount = likeCount;
 
   res.status(200).json({
     message: "post fetch successfully",
@@ -93,8 +162,9 @@ async function getFeedController(req, res) {
   const posts = await Promise.all(
     (await postModel.find().populate("user").lean()).map(async (post) => {
       const isLiked = await likeModel.findOne({
-        user: user.id,
-        post: post._id,
+        user: post.user._id,
+        entityId: post._id,
+        entityType: "post",
       });
 
       const isFollowed = await followModel.findOne({
@@ -102,18 +172,19 @@ async function getFeedController(req, res) {
         following: post.user._id,
       });
 
-      const isSaved = await savedPostModel.findOne({
+      const isSaved = await savedModel.findOne({
         user: user.id,
-        post: post._id,
+        entityId: post._id,
+        entityType: "post",
       });
 
       const commentsCount = await commentModel.aggregate([
-        { $match: { post: post._id } },
+        { $match: { entityId: post._id, entityType: "post" } },
         { $group: { _id: "$post", count: { $sum: 1 } } },
       ]);
 
       const likeCount = await likeModel.aggregate([
-        { $match: { post: post._id } },
+        { $match: { entityId: post._id, entityType: "post" } },
         { $group: { _id: "$post", count: { $sum: 1 } } },
       ]);
 
@@ -122,7 +193,7 @@ async function getFeedController(req, res) {
       post.isSaved = !!isSaved;
       post.commentsCount = commentsCount;
       post.likeCount = likeCount;
-      
+
       return post;
     }),
   );

@@ -1,7 +1,7 @@
-import "../style/form.scss";
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate , Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
+import "../style/Login.scss";
 
 const Login = () => {
   const [email, setEmail] = useState(null);
@@ -22,44 +22,55 @@ const Login = () => {
   return (
     <main>
       <div className="fromContainer">
-        <h2>Login</h2>
-        <form
-          onSubmit={(e) => {
-            handleSubmit(e);
-          }}
-        >
-          <input
-            required
-            type="email"
-            placeholder="enter a email"
-            name="email"
-            id="email"
-            onInput={(e) => setEmail(e.target.value)}
-          />
-          <input
-            required
-            type="password"
-            placeholder="enter a password"
-            name="password"
-            id="password"
-            onInput={(e) => setPassword(e.target.value)}
-          />
-          <button>
-            Login
-            {loading ? (
-              <div className="loader">
-                <div className="dots">
-                  <div className="dot"></div>
-                  <div className="dot"></div>
-                  <div className="dot"></div>
+        <div className="formCard">
+          <h2>Instagram</h2>
+
+          <form
+            onSubmit={(e) => {
+              handleSubmit(e);
+            }}
+          >
+            <div className="inputGroup">
+              <input
+                type="email"
+                placeholder="username, or email"
+                value={email}
+                onInput={(e) => setEmail(e.target.value)}
+                name="email"
+                required
+              />
+
+              <input
+                required
+                placeholder="password"
+                value={password}
+                onInput={(e) => setPassword(e.target.value)}
+                name="password"
+              />
+            </div>
+
+            <button>
+              Login
+              {loading ? (
+                <div className="loader">
+                  <div className="dots">
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              ""
-            )}
-          </button>
-          <p>Dont have an account ? <Link to={"/register"}>create now</Link> </p>
-        </form>
+              ) : (
+                ""
+              )}
+            </button>
+          </form>
+        </div>
+
+        <div className="signupCard">
+          <p>
+            Don't have an account? <Link to="/register">Sign up</Link>
+          </p>
+        </div>
       </div>
     </main>
   );

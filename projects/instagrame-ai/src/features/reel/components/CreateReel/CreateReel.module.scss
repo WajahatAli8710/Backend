@@ -1,0 +1,153 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.createReel {
+  @include flex-center;
+  min-height: calc(100vh - $bottom-nav-height);
+  padding: $spacing-xl;
+
+  @include desktop {
+    min-height: 100vh;
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: 700px;
+  background: $bg-secondary;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  border: 1px solid $border-color;
+}
+
+.header {
+  @include flex-between;
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1px solid $border-color;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  text-align: center;
+  flex: 1;
+}
+
+.shareBtn {
+  @include button-reset;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $accent-blue;
+
+  &:hover {
+    color: $white;
+  }
+}
+
+.content {
+  min-height: 400px;
+}
+
+.uploadArea {
+  @include flex-center;
+  @include flex-column;
+  gap: $spacing-lg;
+  min-height: 400px;
+  color: $text-primary;
+  padding: $spacing-xxl;
+}
+
+.uploadText {
+  font-size: $font-size-xl;
+  color: $text-secondary;
+  text-align: center;
+}
+
+.selectBtn {
+  @include clickable;
+  display: inline-block;
+  padding: 8px 16px;
+  background: $accent-blue;
+  color: $white;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+
+  &:hover {
+    background: $accent-blue-hover;
+  }
+}
+
+.editor {
+  display: flex;
+  min-height: 400px;
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+.preview {
+  width: 250px;
+  background: $bg-primary;
+  @include flex-center;
+  aspect-ratio: 9/16;
+  overflow: hidden;
+
+  @include mobile {
+    width: 100%;
+    max-height: 400px;
+  }
+}
+
+.previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form {
+  flex: 1;
+  @include flex-column;
+  border-left: 1px solid $border-color;
+  padding: $spacing-lg;
+
+  @include mobile {
+    border-left: none;
+    border-top: 1px solid $border-color;
+  }
+}
+
+.captionInput {
+  @include input-reset;
+  width: 100%;
+  font-size: $font-size-lg;
+  color: $text-primary;
+  resize: none;
+  line-height: 1.5;
+  margin-bottom: $spacing-lg;
+
+  &::placeholder {
+    color: $text-tertiary;
+  }
+}
+
+.audioInput {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md 0;
+  border-top: 1px solid $border-color;
+  color: $text-primary;
+}
+
+.textInput {
+  @include input-reset;
+  flex: 1;
+  font-size: $font-size-md;
+  color: $text-primary;
+
+  &::placeholder {
+    color: $text-tertiary;
+  }
+}

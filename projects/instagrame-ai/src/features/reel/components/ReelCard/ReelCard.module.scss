@@ -1,0 +1,164 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.reelCard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  background: $bg-primary;
+  border-radius: $radius-md;
+  overflow: hidden;
+  scroll-snap-align: start;
+
+  @include mobile {
+    border-radius: 0;
+    max-width: 100%;
+  }
+}
+
+.mediaContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 0, 0, 0.4) 80%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+// Right side actions
+.actions {
+  position: absolute;
+  right: $spacing-md;
+  bottom: 120px;
+  @include flex-column;
+  align-items: center;
+  gap: $spacing-xl;
+  z-index: 2;
+
+  @include mobile {
+    right: $spacing-sm;
+    gap: $spacing-lg;
+  }
+}
+
+.actionBtn {
+  @include button-reset;
+  @include flex-column;
+  align-items: center;
+  gap: $spacing-xxs;
+  color: $white;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.liked {
+  color: $accent-red;
+}
+
+.actionCount {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+}
+
+.actionAvatar {
+  margin-top: $spacing-xs;
+  border: 2px solid $white;
+  border-radius: $radius-full;
+}
+
+// Bottom info
+.info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 60px;
+  padding: $spacing-lg;
+  z-index: 2;
+
+  @include mobile {
+    right: 56px;
+    padding: $spacing-md;
+    bottom: $spacing-sm;
+  }
+}
+
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin-bottom: $spacing-sm;
+}
+
+.username {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  color: $white;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-md;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+  }
+}
+
+.followBtn {
+  @include button-reset;
+  padding: 4px 12px;
+  border: 1px solid $white;
+  border-radius: $radius-md;
+  color: $white;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.caption {
+  font-size: $font-size-md;
+  color: $white;
+  margin-bottom: $spacing-sm;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  @include line-clamp(2);
+}
+
+.audio {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  color: $white;
+  font-size: $font-size-sm;
+}
+
+.audioText {
+  @include text-ellipsis;
+  max-width: 200px;
+}
