@@ -1,0 +1,53 @@
+.post{
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    padding: 1rem;
+
+gap:1rem;
+    max-width: 400px;
+   
+
+    .username{
+        display: flex;
+        gap: .5rem;
+        align-items: center;
+        
+    }
+
+    .img{
+        height: 25rem;
+        width: 100%;
+        aspect-ratio: 1 ;
+        border: 1px solid rgb(43, 43, 43);
+        object-fit: contain;
+        background-color: black;
+        border-radius: .5rem;
+    }
+
+        .actions{
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+
+
+            .btnAction{
+                display: flex;
+                align-items: center;
+                padding: 0;
+                gap:.5rem;  
+                button{
+                    background-color: transparent;
+                    border: none;
+                    outline: none;
+                    cursor: pointer;
+                }
+                .activeLike{
+                    color: salmon;
+                }
+                
+            }
+        }
+}
+
+

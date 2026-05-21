@@ -1,100 +1,139 @@
-// import "../style/form.scss"
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 import "../style/Register.scss";
 
 const Register = () => {
-  const [username, setUsername] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [name, setName] = useState(null);
+  // Always use empty strings for input states to keep them controlled
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
 
   const { handleRegister, loading } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    await handleRegister(username, email, password , name);
-    navigate("/");
+    try {
+      await handleRegister(username, email, password, name, profilePic);
+      navigate("/");
+    } catch (err) {
+      console.error("Registration failed:", err);
+    }
   };
-  // return(
 
-  //    <main>
-  //      <div className="fromContainer">
-  //         <h2>Register</h2>
-  //         <form onSubmit={handleSubmit}>
-  //             <input onInput={(e)=> setUsername(e.target.value)} type="username" placeholder="enter a username" name="username" />
-  //             <input  onInput={(e)=> setEmail(e.target.value)} type="email" placeholder="enter a email" name="email" />
-  //             <input  onInput={(e)=> setPassword(e.target.value)} type="password" placeholder="enter a password" name="password"  />
-  //             <button>Register
-  //                 {loading ? (
-  //           <div className="loader">
-  //             <div className="dots">
-  //               <div className="dot"></div>
-  //               <div className="dot"></div>
-  //               <div className="dot"></div>
-  //             </div>
-  //           </div>
-  //         ) : (
-  //           ""
-  //         )}
-  //             </button>
-  //         <p>Already have an account please <Link to={"/login"}>Login</Link> </p>
-  //         </form>
-  //     </div>
-  //    </main>
-  // )''
+
+
+
+  const fileRef = useRef();
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+
+  const handleChange = (e) => {
+    const selected = e.target.files[0];
+
+    if (selected) {
+      setFile(selected);
+      setPreview(URL.createObjectURL(selected));
+    }
+  };
+
+  const handleRemove = () => {
+    setFile(null);
+    setPreview(null);
+    fileRef.current.value = "";
+  };
 
   return (
-    <main>
+    <main className="register-page">
       <div className="fromContainer">
         <div className="formCard">
           <h2>Instagram</h2>
-
           <p className="tagline">
             Sign up to see photos and videos from your friends.
           </p>
 
-          <form onSubmit={(e)=>{
-            handleSubmit(e)
-          }}>
+          <form
+            onSubmit={(e) => {
+              handleSubmit(e);
+            }}
+          >
             <div className="inputGroup">
+              <div className="profilePicUpload">
+                <input
+                  type="file"
+                  ref={fileRef}
+                  hidden
+                  onChange={handleChange}
+                />
+
+                {/* upload button */}
+                {!preview && (
+                  <button
+                    type="button"
+                    className="uploadeBtn"
+                    onClick={() => fileRef.current.click()}
+                  >
+                    upload Profile Pic
+                  </button>
+                )}
+
+                {/* preview section */}
+                {preview && (
+                  <div className="preview">
+                    <img src={preview} alt="preview" />
+
+                    <div className="actions">
+                      <button
+                        type="button"
+                        onClick={() => fileRef.current.click()}
+                      >
+                        change
+                      </button>
+
+                      <button type="button" onClick={handleRemove}>
+                        remove
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <input
                 type="text"
-                placeholder="enter a Full Name"
+                placeholder="Full Name"
                 value={name}
-                onInput={(e) => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
 
               <input
                 type="text"
-                placeholder="enter a User Name"
+                placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
 
               <input
-                required
                 type="email"
-                placeholder="enter a Email"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
 
               <input
-                required
                 type="password"
-                placeholder="enter a Password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
 
-            <button>
-              Login
+            <button type="submit" disabled={loading}>
               {loading ? (
                 <div className="loader">
                   <div className="dots">
@@ -104,7 +143,7 @@ const Register = () => {
                   </div>
                 </div>
               ) : (
-                ""
+                "Sign Up"
               )}
             </button>
           </form>

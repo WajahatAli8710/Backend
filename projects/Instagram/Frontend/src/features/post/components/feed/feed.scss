@@ -1,0 +1,176 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.main{
+  height: fit-content;
+  width: 100%;
+  padding: 20px;
+  position: relative;
+
+.postCard {
+  @include card;
+  margin-bottom: $spacing-md;
+  
+  @include mobile {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    margin-bottom: $spacing-sm;
+  }
+}
+
+.postHeader {
+  @include flex-between;
+  padding: $spacing-md $spacing-lg;
+}
+
+.userInfo {
+  @include flex-start;
+  gap: $spacing-md;
+}
+
+.avatar {
+  @include avatar(32px);
+}
+
+.userDetails {
+  @include flex-column;
+}
+
+.username {
+  @include flex-start;
+  gap: $spacing-xs;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.timestamp {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.moreButton {
+  @include icon-button(24px);
+  color: $color-text-primary;
+}
+
+
+.images{
+
+
+  .postImage {
+    width: 100%;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.postActions {
+  padding: $spacing-sm $spacing-lg;
+}
+
+
+
+
+.actionButton {
+padding: 2rem;
+background-color: saddlebrown;
+  button{
+    // background-color: red;
+  }
+
+}
+  
+.postContent {
+  padding: 0 $spacing-lg;
+}
+
+.caption {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  line-height: 1.5;
+  
+  .captionUsername {
+    font-weight: $font-weight-semibold;
+    margin-right: $spacing-xs;
+  }
+}
+
+.viewComments {
+  @include button-reset;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  padding: $spacing-xs 0;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.commentsSection {
+  padding: 0 $spacing-lg;
+}
+
+.comment {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  padding: $spacing-xs 0;
+  line-height: 1.4;
+  
+  .commentUsername {
+    font-weight: $font-weight-semibold;
+    margin-right: $spacing-xs;
+  }
+}
+
+.addComment {
+  @include flex-between;
+  padding: $spacing-md $spacing-lg;
+  border-top: 1px solid $color-border-light;
+  margin-top: $spacing-sm;
+}
+
+.commentInput {
+  @include input-reset;
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  
+  &::placeholder {
+    color: $color-text-secondary;
+  }
+}
+
+.postButton {
+  @include button-reset;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-blue;
+  opacity: 0.5;
+  pointer-events: none;
+  
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+    
+    &:hover {
+      color: $color-text-link;
+    }
+  }
+}
+
+.detailPost{
+  position: fixed;
+  top: 50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+}

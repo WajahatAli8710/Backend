@@ -10,16 +10,16 @@ export default function Layout() {
   const hideNav = noNavRoutes.includes(location.pathname);
 
   if (hideNav) {
-    return <Outlet />;
+    // return <Outlet />;
   }
 
   return (
     <div className={styles.layout}>
       <Sidebar />
       <main className={styles.main}>
-        <Outlet />
+        {/* <Outlet /> */}
       </main>
-      <BottomNav />
+      {/* <BottomNav /> */}
     </div>
   );
 }

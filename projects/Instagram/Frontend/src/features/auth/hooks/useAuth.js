@@ -17,10 +17,11 @@ export const useAuth = () => {
         setUser(responces.user)
         setLoading(false)
     }
+    
 
-     const handleRegister = async(username , email , password , name)=>{
+     const handleRegister = async(username , email , password , name , profilePic)=>{
         setLoading(true)
-        const responces = await register(username, email , password , name)
+        const responces = await register(username, email , password , name , profilePic)
         setUser(responces.user)
         setLoading(false)
     }

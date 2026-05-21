@@ -24,6 +24,8 @@ export default function App() {
           <PostProvider>
             <ReelProvider>
               <Routes>
+
+                
                 <Route element={<Layout />}>
                   {/* Feed */}
                   <Route path="/" element={<Feed />} />
@@ -46,6 +48,9 @@ export default function App() {
                   {/* Notifications */}
                   <Route path="/notifications" element={<NotificationsPage />} />
                 </Route>
+
+
+
 
                 {/* Auth (no layout) */}
                 <Route path="/login" element={<LoginPage />} />

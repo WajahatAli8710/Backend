@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 async function reqisterController(req, res) {
-  const { name , username, email, password, bio, profilePic } = req.body;
+  const { name, username, email, password, bio, profilePic } = req.body;
 
   const isUserAlreadyExixts = await userModel.findOne({
     $or: [{ email }, { username }],
@@ -27,7 +27,7 @@ async function reqisterController(req, res) {
     email,
     password: hashPassword,
     bio,
-    profilePic,
+    profilePic: profilePic || undefined,
   });
 
   const token = jwt.sign(
@@ -43,7 +43,7 @@ async function reqisterController(req, res) {
   res.status(200).json({
     message: "user register successfully",
     user: {
-      name : user.name,
+      name: user.name,
       username: user.username,
       email: user.email,
       bio: user.bio,
@@ -55,21 +55,24 @@ async function reqisterController(req, res) {
 async function loginController(req, res) {
   const { username, email, password } = req.body;
 
-  const user = await userModel.findOne({
-    $or: [{ email }, { username }],
-  }).select("+password");
+  const user = await userModel
+    .findOne({
+      $or: [{ email }, { username }],
+    })
+    .select("+password");
 
   if (!user) {
     return res.status(401).json({
-      message: "Unauthorize access",
+      message: "Unauthorize accessllllkkkk",
     });
   }
 
   const compairePassword = await bcrypt.compare(password, user.password);
+  console.log(user, compairePassword);
 
   if (!compairePassword) {
     return res.status(401).json({
-      message: "Unauthorize access",
+      message: "Unauthorize access accessllllkkkk",
     });
   }
 
@@ -96,12 +99,12 @@ async function loginController(req, res) {
 
 async function getMeController(req, res) {
   const userId = req.user.id;
-  const user = await userModel.findById(userId)
+  const user = await userModel.findById(userId);
   return res.send(user);
 }
 
 module.exports = {
   reqisterController,
   loginController,
-  getMeController
+  getMeController,
 };

@@ -1,5 +1,6 @@
 const postModel = require("../models/post.model");
 const likeModel = require("../models/like.model");
+const reelModel = require("../models/reel.model")
 const followModel = require("../models/follow.model");
 const savedModel = require("../models/saved.model");
 const ImageKit = require("@imagekit/nodejs");
@@ -67,9 +68,9 @@ async function getPostController(req, res) {
   const user = req.user.id;
 
   const posts = await Promise.all(
-    (await reelModel.find({ user: user.id }).lean()).map(async (post) => {
+    (await postModel.find({ user: user }).populate("user").lean()).map(async (post) => {
       const isLiked = await likeModel.findOne({
-        user: user.id,
+        user: user,
         entityId: post._id,
         entityType: "post",
       });
@@ -91,6 +92,7 @@ async function getPostController(req, res) {
       return post;
     }),
   );
+  console.log(posts , user)
 
   if (!posts) {
     return res.status(404).json({
@@ -120,8 +122,8 @@ async function getPostDetailController(req, res) {
       message: "post not found.",
     });
   }
-
-  const isValidUser = post.user.toString() === user.id;
+  console.log(user , post.user)
+  const isValidUser = post.user._id.toString() === user;
 
   if (!isValidUser) {
     return res.status(403).json({
@@ -160,7 +162,7 @@ async function getFeedController(req, res) {
   const user = req.user;
 
   const posts = await Promise.all(
-    (await postModel.find().populate("user").lean()).map(async (post) => {
+    (await postModel.find().sort({ _id: -1 }).populate("user").lean()).map(async (post) => {
       const isLiked = await likeModel.findOne({
         user: post.user._id,
         entityId: post._id,
@@ -187,12 +189,18 @@ async function getFeedController(req, res) {
         { $match: { entityId: post._id, entityType: "post" } },
         { $group: { _id: "$post", count: { $sum: 1 } } },
       ]);
+  
+      const savedCount = await savedModel.aggregate([
+        { $match: { entityId: post._id, entityType: "post" } },
+        { $group: { _id: "$post", count: { $sum: 1 } } },
+      ]);
 
       post.isLiked = !!isLiked;
       post.isFollowed = !!isFollowed;
       post.isSaved = !!isSaved;
       post.commentsCount = commentsCount;
       post.likeCount = likeCount;
+      post.savedCount = savedCount;
 
       return post;
     }),

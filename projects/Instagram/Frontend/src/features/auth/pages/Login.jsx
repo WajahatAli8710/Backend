@@ -35,7 +35,9 @@ const Login = () => {
                 type="email"
                 placeholder="username, or email"
                 value={email}
-                onInput={(e) => setEmail(e.target.value)}
+                onInput={(e) => {
+                  setEmail(e.target.value)
+                  }}
                 name="email"
                 required
               />

@@ -67,7 +67,7 @@ async function savedController(req, res) {
       isSaved.entityType === "post"
         ? "post saved successfully"
         : "reel saved successfully ",
-    data: isSaved,
+    data: !!isSaved,
   });
 }
 

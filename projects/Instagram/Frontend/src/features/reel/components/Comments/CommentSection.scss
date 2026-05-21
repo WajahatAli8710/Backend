@@ -1,0 +1,34 @@
+.comment {
+  display: flex;
+  align-items: start;
+  gap: 0.7rem;
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+
+    .user-detail {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+
+        p {
+        font-size: 0.9rem;
+        color: #000;
+      }
+
+      span {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: gray;
+      }
+
+    
+    }
+.commentText{
+    font-size: 1rem;
+    color: #110;
+}
+
+  }
+}

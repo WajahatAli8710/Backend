@@ -155,7 +155,7 @@ async function getFeedController(req, res) {
   const user = req.user;
 
   const reels = await Promise.all(
-    (await reelModel.find().populate("user").lean()).map(async (reel) => {
+    (await reelModel.find().sort({ createdAt: -1 }).populate("user").lean()).map(async (reel) => {
       const isLiked = await likeModel.findOne({
         user: user.id,
         entityId: reel._id,
@@ -175,12 +175,16 @@ async function getFeedController(req, res) {
 
       const commentsCount = await commentModel.aggregate([
         { $match: { entityId: reel._id, entityType: "reel" } },
-        { $group: { _id: "$post", count: { $sum: 1 } } },
+        { $group: { _id: "$reel", count: { $sum: 1 } } },
       ]);
 
       const likeCount = await likeModel.aggregate([
         { $match: { entityId: reel._id, entityType: "reel" } },
-        { $group: { _id: "$post", count: { $sum: 1 } } },
+        { $group: { _id: "$reel", count: { $sum: 1 } } },
+      ]);
+      const savedCount = await savedModel.aggregate([
+        { $match: { entityId: reel._id, entityType: "reel" } },
+        { $group: { _id: "$reel", count: { $sum: 1 } } },
       ]);
 
       reel.isLiked = !!isLiked;
@@ -188,6 +192,7 @@ async function getFeedController(req, res) {
       reel.isSaved = !!isSaved;
       reel.commentsCount = commentsCount;
       reel.likeCount = likeCount;
+      reel.savedCount = savedCount  
 
       return reel;
     }),
